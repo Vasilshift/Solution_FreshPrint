@@ -11,7 +11,6 @@ CREATE TABLE call
 Требуется написать запрос, возвращающий для каждого абонента минимальную дату, когда количество событий по абоненту было максимально, 
 и максимальную дату, когда количество событий по абоненту было минимально, а также количество событий.
 
-Сделано не до конца.
 
 WITH ty AS 
 ( 
@@ -24,3 +23,17 @@ GROUP BY event_date, subscriber_name, event_cnt
 SELECT subscriber_name, event_date, event_cnt 
 from ty
 WHERE event_date = (SELECT MIN(event_date) as mindate from ty)
+
+-----    когда количество событий по абоненту было минимально
+
+WITH ty AS 
+( 
+SELECT subscriber_name, event_date, event_cnt  
+FROM call
+WHERE event_cnt = (SELECT MIN(event_cnt) from call)
+GROUP BY event_date, subscriber_name, event_cnt
+)
+
+SELECT subscriber_name, event_date, event_cnt 
+from ty
+WHERE event_date = (SELECT MAX(event_date) as mindate from ty)
