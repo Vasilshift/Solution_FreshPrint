@@ -1,0 +1,18 @@
+Решение на Oracle
+
+CREATE TABLE temp_colors
+TABLESPACE tbs_quorum
+AS 
+(SELECT 'Зеленый' color from DUAL
+UNION ALL 
+SELECT 'Красный' color from DUAL
+UNION ALL
+SELECT 'Синий' color from DUAL
+UNION ALL
+SELECT 'Желтый' color from DUAL
+)
+
+select a.color с1, b.color с2
+from colors
+temp_colors a
+LEFT JOIN temp_colors b ON (a.color != b.color)
