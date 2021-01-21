@@ -26,11 +26,11 @@ INSERT INTO #tbl SELECT 'Белый' as color;
 
 --my solution
 
-SELECT #tbl.color,#tbl1.color FROM 
-	COLORS #tbl, 
-	COLORS #tbl1
+SELECT a.color, b.color FROM 
+	COLORS a, 
+	COLORS b
 WHERE
-	#tbl.color != #tbl1.Color
+	a.color != b.Color
   
 -------solution from internet
 
