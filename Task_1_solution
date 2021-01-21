@@ -1,0 +1,7 @@
+--my solution
+
+SELECT a.color, b.color FROM 
+	COLORS a, 
+	COLORS b
+WHERE
+	a.color != b.Color
