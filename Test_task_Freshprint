@@ -24,6 +24,16 @@ INSERT INTO #tbl SELECT 'Фиолетовый' as color;
 INSERT INTO #tbl SELECT 'Пурпурный' as color;
 INSERT INTO #tbl SELECT 'Белый' as color;
 
+--my solution
+
+SELECT #tbl.color,#tbl1.color FROM 
+	COLORS #tbl, 
+	COLORS #tbl1
+WHERE
+	#tbl.color != #tbl1.Color
+  
+-------solution from internet
+
 select res.Цвет1, res.Цвет2
 from (
 select ROW_NUMBER() OVER (ORDER BY tbl1.color,tbl2.color) as mainID,
