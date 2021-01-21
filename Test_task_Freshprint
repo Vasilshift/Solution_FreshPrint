@@ -1,0 +1,45 @@
+Есть таблица с 7 цветами:
+
+tbl (color)
+Красный
+Зеленый
+Синий
+Желтый
+Фиолетовый
+Пурпурный
+Белый
+
+Необходимо получить всевозможные уникальные пары этих цветов, цвета должны быть разными (Красный Красный и т.п. исключить)
+
+Решение на MS SQL:
+IF OBJECT_ID('tempdb.dbo.#tbl', 'U') IS NOT NULL
+DROP TABLE #tbl;
+
+create table #tbl (color nvarchar(80) );
+INSERT INTO #tbl SELECT 'Красный' as color;
+INSERT INTO #tbl SELECT 'Зеленый' as color;
+INSERT INTO #tbl SELECT 'Синий' as color;
+INSERT INTO #tbl SELECT 'Желтый' as color;
+INSERT INTO #tbl SELECT 'Фиолетовый' as color;
+INSERT INTO #tbl SELECT 'Пурпурный' as color;
+INSERT INTO #tbl SELECT 'Белый' as color;
+
+select res.Цвет1, res.Цвет2
+from (
+select ROW_NUMBER() OVER (ORDER BY tbl1.color,tbl2.color) as mainID,
+tbl1.color as Цвет1,
+tbl2.color as Цвет2,
+tbl3.id
+from #tbl tbl1
+cross join #tbl tbl2
+left join (
+select ROW_NUMBER() OVER (ORDER BY tbl1.color,tbl2.color) as id,
+tbl1.color as color1,
+tbl2.color as color2
+from #tbl tbl1
+cross join #tbl tbl2
+where tbl1.color<>tbl2.color
+) tbl3 ON tbl1.color = tbl3.color2 and tbl2.color = tbl3.color1
+where tbl1.color<>tbl2.color
+) res
+where res.mainID<res.id
